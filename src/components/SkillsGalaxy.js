@@ -134,7 +134,11 @@ function GalaxySystem() {
 export default function SkillsGalaxy() {
   return (
     <div style={{ width: '100%', height: '500px', position: 'relative' }} className="interactive">
-      <Canvas camera={{ position: [0, 2.5, 4.5], fov: 55 }}>
+      <Canvas
+        camera={{ position: [0, 2.5, 4.5], fov: 55 }}
+        dpr={[1, 1.5]}
+        gl={{ powerPreference: 'high-performance', antialias: true, alpha: true }}
+      >
         <ambientLight intensity={1.0} />
         <GalaxySystem />
         <OrbitControls enableZoom={false} maxPolarAngle={Math.PI / 2.2} minPolarAngle={Math.PI / 5} />

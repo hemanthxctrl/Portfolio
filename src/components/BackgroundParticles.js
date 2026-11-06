@@ -9,7 +9,9 @@ export default function BackgroundParticles() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
     let animationFrameId;
 
     const handleResize = () => {
@@ -17,56 +19,62 @@ export default function BackgroundParticles() {
       canvas.height = window.innerHeight;
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
     handleResize();
 
-    const particles = [];
-    const particleCount = 65;
+    const particleCount = 45;
+    const maxDistance = 120;
+    const maxDistanceSq = maxDistance * maxDistance;
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 1.5 + 0.5,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-      });
-    }
+    const particles = Array.from({ length: particleCount }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 1.5 + 0.5,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+    }));
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = 'rgba(0, 98, 255, 0.15)';
-      ctx.strokeStyle = 'rgba(0, 98, 255, 0.04)';
-
+      // Move particles
       for (let i = 0; i < particleCount; i++) {
         const p = particles[i];
-
-        // Move
         p.x += p.vx;
         p.y += p.vy;
 
-        // Boundaries
         if (p.x < 0 || p.x > canvas.width) p.vx = -p.vx;
         if (p.y < 0 || p.y > canvas.height) p.vy = -p.vy;
+      }
 
-        // Draw particle
-        ctx.beginPath();
+      // Draw all particle dots in a single batch
+      ctx.fillStyle = 'rgba(0, 98, 255, 0.15)';
+      ctx.beginPath();
+      for (let i = 0; i < particleCount; i++) {
+        const p = particles[i];
+        ctx.moveTo(p.x + p.radius, p.y);
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
+      }
+      ctx.fill();
 
-        // Constellation lines
+      // Draw all constellation lines in a single batch
+      ctx.strokeStyle = 'rgba(0, 98, 255, 0.04)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let i = 0; i < particleCount; i++) {
+        const p = particles[i];
         for (let j = i + 1; j < particleCount; j++) {
           const p2 = particles[j];
-          const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-          if (dist < 130) {
-            ctx.beginPath();
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const distSq = dx * dx + dy * dy;
+          if (distSq < maxDistanceSq) {
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
           }
         }
       }
+      ctx.stroke();
 
       animationFrameId = requestAnimationFrame(draw);
     };

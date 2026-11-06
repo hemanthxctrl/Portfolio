@@ -8,6 +8,11 @@ const GithubIcon = ({ size = 16 }) => (
     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
   </svg>
 );
+function pseudoRandom(seed) {
+  const x = Math.sin(seed * 9999) * 10000;
+  return x - Math.floor(x);
+}
+
 export default function GitHubActivity() {
   const [hoveredDay, setHoveredDay] = useState(null);
 
@@ -27,7 +32,7 @@ export default function GitHubActivity() {
       const dayOfWeek = currentDate.getDay();
       let intensity = 0;
       
-      const rand = Math.random();
+      const rand = pseudoRandom(i + 1);
       if (dayOfWeek === 0 || dayOfWeek === 6) {
         // Weekends: 80% nothing, 20% light/medium activity
         intensity = rand > 0.8 ? (rand > 0.95 ? 2 : 1) : 0;
@@ -41,14 +46,14 @@ export default function GitHubActivity() {
       const month = currentDate.getMonth();
       // October/November streak
       if ((month === 9 && dayOfMonth > 10) || (month === 10 && dayOfMonth < 15)) {
-        if (Math.random() > 0.15) {
-          intensity = Math.floor(Math.random() * 3) + 2; // 2, 3, or 4
+        if (pseudoRandom(i + 50) > 0.15) {
+          intensity = Math.floor(pseudoRandom(i + 100) * 3) + 2; // 2, 3, or 4
         }
       }
 
       data.push({
         date: currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-        count: intensity === 0 ? 0 : intensity * 2 + Math.floor(Math.random() * 3),
+        count: intensity === 0 ? 0 : intensity * 2 + Math.floor(pseudoRandom(i + 200) * 3),
         level: intensity, // 0 to 4
       });
     }

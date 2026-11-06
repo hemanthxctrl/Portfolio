@@ -24,8 +24,10 @@ export default function Typewriter({ words, speed = 80, delay = 1800 }) {
     if (!isDeleting && currentText === currentFullWord) {
       timer = setTimeout(() => setIsDeleting(true), delay);
     } else if (isDeleting && currentText === '') {
-      setIsDeleting(false);
-      setCurrentWordIndex((prev) => (prev + 1) % words.length);
+      timer = setTimeout(() => {
+        setIsDeleting(false);
+        setCurrentWordIndex((prev) => (prev + 1) % words.length);
+      }, speed);
     }
 
     return () => clearTimeout(timer);

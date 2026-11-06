@@ -195,7 +195,7 @@ export default function Home() {
                 As A <span className="gradient-text"><Typewriter words={["Cloud Engineer", "Full Stack Developer", "Automation Specialist", "IoT Architect"]} /></span>
               </h1>
               <p className="hero-description">
-                Hi, I'm Hemanth. I engineer high-performance systems with secure cloud backends, automated Docker workflows, and smart client interfaces.
+                Hi, I&apos;m Hemanth. I engineer high-performance systems with secure cloud backends, automated Docker workflows, and smart client interfaces.
               </p>
               <div className="hero-cta">
                 <a href="#projects" className="btn btn-primary">
@@ -273,10 +273,10 @@ export default function Home() {
                     <code>
 {`{
   `}
-  <span className="editor-prop">"name"</span>: <span className="editor-string">"Uppala Hemanth Sreenivas"</span>,
-  <span className="editor-prop">"focus"</span>: [<span className="editor-string">"AWS Cloud Computing"</span>, <span className="editor-string">"Full Stack Web"</span>],
-  <span className="editor-prop">"ide"</span>: <span className="editor-string">"VS Code & Claude Code"</span>,
-  <span className="editor-prop">"philosophy"</span>: <span className="editor-string">"Leveling up every day, one commit at a time."</span>
+  <span className="editor-prop">&quot;name&quot;</span>: <span className="editor-string">&quot;Uppala Hemanth Sreenivas&quot;</span>,
+  <span className="editor-prop">&quot;focus&quot;</span>: [<span className="editor-string">&quot;AWS Cloud Computing&quot;</span>, <span className="editor-string">&quot;Full Stack Web&quot;</span>],
+  <span className="editor-prop">&quot;ide&quot;</span>: <span className="editor-string">&quot;VS Code &amp; Claude Code&quot;</span>,
+  <span className="editor-prop">&quot;philosophy&quot;</span>: <span className="editor-string">&quot;Leveling up every day, one commit at a time.&quot;</span>
 {`}`}
                     </code>
                   </pre>

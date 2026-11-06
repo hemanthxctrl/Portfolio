@@ -1,40 +1,46 @@
 'use client';
 
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 
-function ParticleSphere({ mousePosition }) {
+// Pre-generate deterministic spherical point distribution
+function createSpherePoints(numPoints = 1600, radius = 1.2) {
+  const points = new Float32Array(numPoints * 3);
+  const phi = Math.PI * (3 - Math.sqrt(5)); // Golden angle
+
+  for (let i = 0; i < numPoints; i++) {
+    const y = 1 - (i / (numPoints - 1)) * 2;
+    const rad = Math.sqrt(Math.max(0, 1 - y * y));
+    const theta = phi * i;
+
+    // Slight radial depth variation based on index
+    const r = radius * (0.85 + 0.15 * Math.sin(i * 12.9898));
+
+    points[i * 3] = r * rad * Math.cos(theta);
+    points[i * 3 + 1] = r * y;
+    points[i * 3 + 2] = r * rad * Math.sin(theta);
+  }
+  return points;
+}
+
+const STATIC_SPHERE_POINTS = createSpherePoints();
+
+function ParticleSphere() {
   const ref = useRef();
-  
-  // Generate random points in a sphere manually to avoid extra dependencies
-  const sphere = useMemo(() => {
-    const numPoints = 2000;
-    const radius = 1.2;
-    const points = new Float32Array(numPoints * 3);
-    for (let i = 0; i < numPoints; i++) {
-      const u = Math.random();
-      const v = Math.random();
-      const theta = u * 2.0 * Math.PI;
-      const phi = Math.acos(2.0 * v - 1.0);
-      const r = radius * Math.cbrt(Math.random()); // uniform distribution
-      
-      points[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-      points[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-      points[i * 3 + 2] = r * Math.cos(phi);
-    }
-    return points;
-  }, []);
+  const sphere = useMemo(() => STATIC_SPHERE_POINTS, []);
 
   useFrame((state, delta) => {
     if (ref.current) {
       // Rotate sphere continuously
       ref.current.rotation.x += delta * 0.04;
       ref.current.rotation.y += delta * 0.06;
-      
-      // Smoothly tilt toward mouse position
-      ref.current.rotation.x += (mousePosition.y * 0.12 - ref.current.rotation.x) * 0.05;
-      ref.current.rotation.y += (mousePosition.x * 0.12 - ref.current.rotation.y) * 0.05;
+
+      // Smoothly tilt toward mouse pointer without any React re-renders
+      const targetX = state.pointer.y * 0.12;
+      const targetY = state.pointer.x * 0.12;
+      ref.current.rotation.x += (targetX - ref.current.rotation.x) * 0.05;
+      ref.current.rotation.y += (targetY - ref.current.rotation.y) * 0.05;
     }
   });
 
@@ -55,24 +61,15 @@ function ParticleSphere({ mousePosition }) {
 }
 
 export default function Hero3D() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth) * 2 - 1,
-        y: -(e.clientY / window.innerHeight) * 2 + 1,
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   return (
     <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 0, pointerEvents: 'none' }}>
-      <Canvas camera={{ position: [0, 0, 1] }}>
+      <Canvas
+        camera={{ position: [0, 0, 1] }}
+        dpr={[1, 1.5]}
+        gl={{ powerPreference: 'high-performance', antialias: false, alpha: true }}
+      >
         <ambientLight intensity={0.5} />
-        <ParticleSphere mousePosition={mousePosition} />
+        <ParticleSphere />
       </Canvas>
     </div>
   );

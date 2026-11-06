@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#0b2545"/>
+  <rect x="1" y="1" width="62" height="62" rx="13" stroke="rgba(0, 210, 255, 0.4)" stroke-width="1.5"/>
+  <!-- Stylized Monogram ANS -->
+  <text x="32" y="38" font-family="'Outfit', -apple-system, sans-serif" font-weight="900" font-size="20" fill="#ffffff" text-anchor="middle" letter-spacing="1">ANS</text>
+  <circle cx="32" cy="46" r="2.5" fill="#00d2ff"/>
+</svg>
+

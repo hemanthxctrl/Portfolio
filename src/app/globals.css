@@ -717,6 +717,15 @@ body {
   gap: 0.5rem;
 }
 
+.certificate-thumb-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 98, 255, 0.18) !important;
+}
+
+.certificate-thumb-hover:hover .cert-overlay {
+  opacity: 1 !important;
+}
+
 /* Contact Section & Redesigned Calculator */
 .contact-grid {
   display: grid;

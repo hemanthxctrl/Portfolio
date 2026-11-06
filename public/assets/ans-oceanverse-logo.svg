@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 70" width="340" height="70" fill="none">
+  <!-- Monogram ANS -->
+  <g id="ans-mark">
+    <!-- Stylized A -->
+    <path d="M12 52 L28 12 L40 12 L56 52 L44 52 L40 41 L28 41 L24 52 Z M31 33 L37 33 L34 22 Z" fill="#0b2545"/>
+    <polygon points="28,41 40,41 37,33 31,33" fill="#00d2ff"/>
+    <!-- Stylized N -->
+    <path d="M60 52 L60 12 L72 12 L86 37 L86 12 L98 12 L98 52 L86 52 L72 27 L72 52 Z" fill="#0b2545"/>
+    <!-- Stylized S -->
+    <path d="M102 42 C102 48 107 53 117 53 C129 53 135 47 135 39 C135 28 120 28 120 23 C120 19 125 18 130 18 C136 18 140 20 143 24 L150 16 C145 11 139 9 130 9 C118 9 109 15 109 23 C109 34 124 34 124 39 C124 43 119 44 115 44 C109 44 105 41 102 37 Z" fill="#0b2545"/>
+  </g>
+  <!-- Divider -->
+  <line x1="162" y1="12" x2="162" y2="52" stroke="#00d2ff" stroke-width="2" stroke-linecap="round"/>
+  <!-- Text OCEANVERSE TECHNOLOGIES -->
+  <text x="174" y="32" font-family="'Outfit', -apple-system, BlinkMacSystemFont, sans-serif" font-weight="800" font-size="19" fill="#0b2545" letter-spacing="2">OCEANVERSE</text>
+  <text x="174" y="47" font-family="'Outfit', -apple-system, BlinkMacSystemFont, sans-serif" font-weight="600" font-size="9" fill="#0062ff" letter-spacing="3.5">— TECHNOLOGIES —</text>
+  <text x="174" y="58" font-family="'Outfit', -apple-system, BlinkMacSystemFont, sans-serif" font-weight="500" font-size="6.5" fill="#64748b" letter-spacing="1.5">INNOVATE • BUILD • CONNECT • GROW</text>
+</svg>
+

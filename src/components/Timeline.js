@@ -1,9 +1,31 @@
 'use client';
 
 import { useState } from 'react';
-import { Briefcase, GraduationCap, Calendar, Star } from 'lucide-react';
+import Image from 'next/image';
+import { Briefcase, GraduationCap, Calendar, Award, ExternalLink, Download, ShieldCheck, CheckCircle } from 'lucide-react';
+import CertificateModal from '@/components/CertificateModal';
 
 const EXPERIENCE_DATA = [
+  {
+    role: 'Cloud & Security Engineer Intern',
+    org: 'ANS Oceanverse Technologies Pvt. Ltd.',
+    logo: '/assets/ans-mark.svg',
+    date: '15 June 2026 – 30 September 2026',
+    status: 'Completed',
+    workArrangement: 'Work From Home (WFH)',
+    project: 'HI-HUBBLE',
+    desc: 'Successfully completed an internship as a Cloud & Security Engineer at ANS Oceanverse Technologies Pvt. Ltd., contributing to the HI-HUBBLE project. Coordinated assigned project activities, collaborated with the designated Project Manager and management team, and carried out responsibilities in accordance with organizational requirements and project objectives.',
+    tags: ['Cloud Security', 'HI-HUBBLE Project', 'AWS Architecture', 'Work From Home'],
+    certificate: {
+      image: '/certificates/ans-oceanverse-internship-certificate.jpg',
+      downloadName: 'ANS_Oceanverse_Internship_Certificate_U_Hemanth_Sreenivas.jpg',
+      title: 'Internship Certificate — ANS Oceanverse Technologies',
+      organization: 'ANS Oceanverse Technologies Pvt. Ltd.',
+      project: 'HI-HUBBLE',
+      issueDate: '14 October 2026',
+      employeeId: 'ANSID0006',
+    },
+  },
   {
     role: 'Python & Cloud Intern',
     org: 'CodeAlpha',
@@ -46,6 +68,7 @@ const EDUCATION_DATA = [
 
 export default function Timeline() {
   const [activeTab, setActiveTab] = useState('exp'); // 'exp' or 'edu'
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
 
   const currentData = activeTab === 'exp' ? EXPERIENCE_DATA : EDUCATION_DATA;
 
@@ -89,14 +112,64 @@ export default function Timeline() {
             />
             <div className="glass-card" style={{ padding: '1.8rem', background: '#ffffff' }}>
               <div className="timeline-header">
-                <div>
-                  <h4 className="timeline-title" style={{ fontSize: '1.25rem', fontWeight: 700 }}>{item.role}</h4>
-                  <p className="timeline-org" style={{ 
-                    color: activeTab === 'exp' ? 'var(--accent-blue)' : 'var(--accent-purple)',
-                    fontWeight: 600,
-                    marginTop: '0.2rem'
-                  }}>{item.org}</p>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem' }}>
+                  {item.logo && (
+                    <Image
+                      src={item.logo}
+                      alt={`${item.org} Logo`}
+                      width={36}
+                      height={36}
+                      style={{
+                        borderRadius: '8px',
+                        marginTop: '0.15rem',
+                        flexShrink: 0,
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                      }}
+                    />
+                  )}
+                  <div>
+                    <h4 className="timeline-title" style={{ fontSize: '1.25rem', fontWeight: 700 }}>{item.role}</h4>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.2rem' }}>
+                      <p className="timeline-org" style={{ 
+                        color: activeTab === 'exp' ? 'var(--accent-blue)' : 'var(--accent-purple)',
+                        fontWeight: 600,
+                        margin: 0,
+                      }}>{item.org}</p>
+
+                      {item.status && (
+                        <span style={{
+                          fontSize: '0.75rem',
+                          padding: '0.12rem 0.55rem',
+                          borderRadius: '9999px',
+                          backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                          color: '#059669',
+                          fontWeight: 600,
+                          border: '1px solid rgba(16, 185, 129, 0.25)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.25rem',
+                        }}>
+                          <CheckCircle size={12} /> {item.status}
+                        </span>
+                      )}
+
+                      {item.project && (
+                        <span style={{
+                          fontSize: '0.75rem',
+                          padding: '0.12rem 0.55rem',
+                          borderRadius: '9999px',
+                          backgroundColor: 'rgba(0, 98, 255, 0.07)',
+                          color: 'var(--accent-blue)',
+                          fontWeight: 600,
+                          border: '1px solid rgba(0, 98, 255, 0.2)',
+                        }}>
+                          Project: {item.project}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
+
                 <span className="timeline-date" style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
@@ -107,14 +180,189 @@ export default function Timeline() {
                   <Calendar size={14} /> {item.date}
                 </span>
               </div>
+
               <p className="timeline-desc" style={{ 
                 color: 'var(--text-secondary)', 
                 fontSize: '0.95rem',
-                lineHeight: '1.5',
+                lineHeight: '1.6',
                 marginTop: '0.75rem'
               }}>{item.desc}</p>
+
+              {/* Certificate Preview Card if present */}
+              {item.certificate && (
+                <div style={{
+                  marginTop: '1.25rem',
+                  padding: '1.25rem',
+                  borderRadius: '12px',
+                  backgroundColor: '#f8fafc',
+                  border: '1px solid rgba(0, 98, 255, 0.15)',
+                  boxShadow: '0 2px 8px rgba(0, 98, 255, 0.03)',
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '0.5rem',
+                    marginBottom: '1rem',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                      <Award size={18} style={{ color: 'var(--accent-blue)' }} />
+                      <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+                        Internship Certificate
+                      </span>
+                      <span style={{
+                        fontSize: '0.72rem',
+                        padding: '0.15rem 0.5rem',
+                        borderRadius: '9999px',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        color: '#059669',
+                        fontWeight: 600,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.25rem',
+                      }}>
+                        <ShieldCheck size={12} /> Verified
+                      </span>
+                    </div>
+
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                      Issued: {item.certificate.issueDate}
+                    </span>
+                  </div>
+
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                    gap: '1.25rem',
+                    alignItems: 'center',
+                  }}>
+                    {/* Interactive Thumbnail */}
+                    <div
+                      onClick={() => setSelectedCertificate(item.certificate)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setSelectedCertificate(item.certificate);
+                        }
+                      }}
+                      aria-label="Enlarge ANS Oceanverse internship certificate"
+                      className="certificate-thumb-hover"
+                      style={{
+                        cursor: 'pointer',
+                        borderRadius: '10px',
+                        overflow: 'hidden',
+                        border: '1.5px solid rgba(0, 98, 255, 0.2)',
+                        boxShadow: '0 4px 14px rgba(0, 0, 0, 0.06)',
+                        position: 'relative',
+                        aspectRatio: '1024 / 692',
+                        backgroundColor: '#0b192c',
+                        transition: 'all 0.25s ease',
+                      }}
+                    >
+                      <Image
+                        src={item.certificate.image}
+                        alt="ANS Oceanverse Technologies Internship Certificate Preview - U. Hemanth Sreenivas"
+                        width={600}
+                        height={405}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain',
+                          display: 'block',
+                        }}
+                      />
+                      <div
+                        className="cert-overlay"
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          backgroundColor: 'rgba(11, 37, 69, 0.5)',
+                          backdropFilter: 'blur(2px)',
+                          WebkitBackdropFilter: 'blur(2px)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.45rem',
+                          color: '#ffffff',
+                          fontSize: '0.875rem',
+                          fontWeight: 600,
+                          opacity: 0,
+                          transition: 'opacity 0.2s ease',
+                        }}
+                      >
+                        <ExternalLink size={16} /> Click to Inspect
+                      </div>
+                    </div>
+
+                    {/* Metadata & Actions */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                      <div style={{
+                        fontSize: '0.85rem',
+                        color: 'var(--text-secondary)',
+                        lineHeight: 1.6,
+                        backgroundColor: '#ffffff',
+                        padding: '0.75rem 1rem',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(0, 0, 0, 0.06)',
+                      }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Organization:</span>
+                          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>ANS Oceanverse</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Project:</span>
+                          <span style={{ fontWeight: 600, color: 'var(--accent-blue)' }}>HI-HUBBLE</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Employee ID:</span>
+                          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>ANSID0006</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ color: 'var(--text-muted)' }}>Arrangement:</span>
+                          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Work From Home</span>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedCertificate(item.certificate)}
+                          className="btn btn-primary"
+                          style={{
+                            padding: '0.5rem 1rem',
+                            fontSize: '0.85rem',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.4rem',
+                          }}
+                        >
+                          <ExternalLink size={15} /> View Certificate
+                        </button>
+                        <a
+                          href={item.certificate.image}
+                          download={item.certificate.downloadName}
+                          className="btn btn-secondary"
+                          style={{
+                            padding: '0.5rem 1rem',
+                            fontSize: '0.85rem',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.4rem',
+                            textDecoration: 'none',
+                          }}
+                        >
+                          <Download size={15} /> Download Certificate
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
               
-              <div className="timeline-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem' }}>
+              <div className="timeline-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.25rem' }}>
                 {item.tags.map((tag, tagIdx) => (
                   <span key={tagIdx} className="timeline-tag" style={{
                     fontSize: '0.75rem',
@@ -134,6 +382,14 @@ export default function Timeline() {
           </div>
         ))}
       </div>
+
+      {/* Certificate Lightbox Modal */}
+      <CertificateModal
+        key={selectedCertificate?.image}
+        isOpen={!!selectedCertificate}
+        onClose={() => setSelectedCertificate(null)}
+        certificateData={selectedCertificate}
+      />
     </div>
   );
 }
